@@ -43,7 +43,9 @@ export const MonitorPage = () => {
         openModal={() => setOpenModal(true)}
         monitorId={(id) => setMonitorId(id)}
       />
-      <MonitorsForm editingMonitor={editingMonitor} />
+      <MonitorsForm
+        editingMonitor={editingMonitor}
+      />
       {openModal && (
         <Modal closeModal={() => onModalClose()}>
           <MonitorsForm editingMonitor={editingMonitor} />

@@ -1,13 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export const MonitoringsForm = (props) => {
+  const [editing, setEditing] = useState(false);
+
   const [newMonitoring, setNewMonitoring] = useState({
     class: "",
     monitorid: 0,
     classroom: "",
     monitoringdate: "",
   });
+
+  useEffect(() => {
+    if (props.editingMonitoring) {
+      setEditing(true);
+      assignEditingMonitoring(props.editingMonitoring)
+    }
+  }, [props.editingMonitoring]);
+
+  const assignEditingMonitoring = (editingMonitoring) => {
+    setNewMonitoring({
+      class: editingMonitoring.class,
+      monitorid: editingMonitoring.monitorid,
+      classroom: editingMonitoring.classroom,
+      monitoringdate: editingMonitoring.monitoringdate,
+      id: editingMonitoring.id,
+    });
+  };
 
   const handleInputChange = (e) => {
     setNewMonitoring({
@@ -18,14 +37,31 @@ export const MonitoringsForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3001/api/monitoring/", newMonitoring)
-      .then((res) => console.log(res.data));
+    if (editing) {
+      axios
+        .put(
+          `http://localhost:3001/api/monitoring/${newMonitoring.id}`,
+          newMonitoring
+        )
+        .then((res) => console.log());
+    } else {
+      axios
+        .post("http://localhost:3001/api/monitoring/", newMonitoring)
+        .then((res) => console.log(res.data));
+    };
+    setNewMonitoring({
+      class: "",
+      monitorid: 0,
+      classroom: "",
+      monitoringdate: "",
+    });
+    setEditing(false);
   };
 
   return (
     <div className="form-container">
-      <div className="form-title">Create A Monitoring</div>
+      <div className="form-title">
+      {editing ? "Update" : "Create"} A Monitoring</div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
@@ -69,7 +105,7 @@ export const MonitoringsForm = (props) => {
           />
         </div>
         <div className="form-group">
-          <input type="submit" value="Create" />
+          <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>
     </div>

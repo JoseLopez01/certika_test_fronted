@@ -18,7 +18,7 @@ export const MonitorsForm = (props) => {
       setEditing(true);
       assignEditingMonitor(props.editingMonitor);
     }
-  }, []);
+  }, [props.editingMonitor]);
 
   const assignEditingMonitor = (editingMonitor) => {
     setNewMonitor({
@@ -46,10 +46,19 @@ export const MonitorsForm = (props) => {
           console.log(res);
         });
     }
+    setNewMonitor({
+      firstname: "",
+      lastname: "",
+      career: "",
+      phonenumber: "",
+      email: "",
+      semester: "",
+      identification: "",
+    });
+    setEditing(false);
   };
 
   const handleInputChange = (e) => {
-    console.log(e);
     setNewMonitor({
       ...newMonitor,
       [e.target.name]: e.target.value,

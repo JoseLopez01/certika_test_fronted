@@ -11,7 +11,7 @@ export const MonitoringsPage = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const [monitoringId, setMonitoringId] = useState(null);
-  const [editingMonitor, setEditingMonitoring] = useState(null);
+  const [editingMonitoring, setEditingMonitoring] = useState(null);
 
   useEffect(() => {
     axios.get("http://localhost:3001/api/monitoring/").then((res) => {
@@ -35,7 +35,7 @@ export const MonitoringsPage = () => {
   }, [monitoringId]);
 
   const onModalClose = () => {
-    if (monitoringId || editingMonitor) {
+    if (monitoringId || editingMonitoring) {
       setEditingMonitoring(null);
       setMonitoringId(null);
     }
@@ -49,10 +49,16 @@ export const MonitoringsPage = () => {
         openModal={() => setOpenModal(true)}
         monitoringid={(id) => setMonitoringId(id)}
       />
-      <MonitoringsForm monitors={monitors} />
+      <MonitoringsForm
+        editingMonitoring={editingMonitoring}
+        monitors={monitors}
+      />
       {openModal && (
         <Modal closeModal={() => onModalClose()}>
-          <MonitoringsForm monitors={monitors} />
+          <MonitoringsForm
+            monitors={monitors}
+            editingMonitoring={editingMonitoring}
+          />
         </Modal>
       )}
     </div>
