@@ -3,7 +3,7 @@ export const MonitorsTable = (props) => {
     <div className="table-container">
       <div className="monitors-table-header">
         <div className="button-borderless">
-          <button onClick={props.openModal} >Create</button>
+          <button onClick={props.openModal}>Create</button>
         </div>
       </div>
       <table>
@@ -18,7 +18,11 @@ export const MonitorsTable = (props) => {
         </thead>
         <tbody>
           {props.monitors.map((monitor) => (
-            <tr key={monitor.id} className="column-row">
+            <tr
+              key={monitor.id}
+              className="column-row"
+              onClick={() => props.monitorId(monitor.id)}
+            >
               <td className="column-value">
                 {monitor.firstname} {monitor.lastname}
               </td>

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 
 export const MonitoringsTable = (props) => {
+  
   return (
     <Fragment>
       <div className="table-container">
@@ -20,7 +21,11 @@ export const MonitoringsTable = (props) => {
           </thead>
           <tbody>
             {props.monitorings.map((monitoring) => (
-              <tr key={monitoring.id} className="column-row">
+              <tr
+                key={monitoring.id}
+                className="column-row"
+                onClick={() => props.monitoringid(monitoring.id)}
+              >
                 <td className="column-value">{monitoring.class}</td>
                 <td className="column-value">
                   {monitoring.monitor.firstname} {monitoring.monitor.lastname}

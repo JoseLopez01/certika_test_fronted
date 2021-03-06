@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export const MonitorsForm = (props) => {
+  const [editing, setEditing] = useState(false);
   const [newMonitor, setNewMonitor] = useState({
     firstname: "",
     lastname: "",
@@ -12,14 +13,43 @@ export const MonitorsForm = (props) => {
     identification: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post("http://localhost:3001/api/monitor", newMonitor).then((res) => {
-      console.log(res);
+  useEffect(() => {
+    if (props.editingMonitor) {
+      setEditing(true);
+      assignEditingMonitor(props.editingMonitor);
+    }
+  }, []);
+
+  const assignEditingMonitor = (editingMonitor) => {
+    setNewMonitor({
+      firstname: editingMonitor.firstname,
+      lastname: editingMonitor.lastname,
+      career: editingMonitor.career,
+      phonenumber: editingMonitor.phonenumber,
+      email: editingMonitor.email,
+      semester: editingMonitor.semester,
+      identification: editingMonitor.identification,
+      id: editingMonitor.id,
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editing) {
+      axios
+        .put(`http://localhost:3001/api/monitor/${newMonitor.id}`, newMonitor)
+        .then((res) => console.log(res));
+    } else {
+      axios
+        .post("http://localhost:3001/api/monitor", newMonitor)
+        .then((res) => {
+          console.log(res);
+        });
+    }
+  };
+
   const handleInputChange = (e) => {
+    console.log(e);
     setNewMonitor({
       ...newMonitor,
       [e.target.name]: e.target.value,
@@ -28,7 +58,9 @@ export const MonitorsForm = (props) => {
 
   return (
     <div className="form-container">
-      <div className="form-title">Create A Monitor</div>
+      <div className="form-title">
+        {editing ? "Update" : "Create"} A Monitor
+      </div>
       <form onSubmit={(e) => handleSubmit(e)} autoComplete="false">
         <div className="form-group">
           <input
@@ -52,7 +84,7 @@ export const MonitorsForm = (props) => {
           <input
             type="text"
             name="identification"
-            placeholder="Identifiacion"
+            placeholder="Identifiation"
             value={newMonitor.identification}
             onChange={handleInputChange}
           />
@@ -94,7 +126,7 @@ export const MonitorsForm = (props) => {
           />
         </div>
         <div className="form-group">
-          <input type="submit" value="Save" />
+          <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>
     </div>
