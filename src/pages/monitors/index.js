@@ -1,22 +1,22 @@
-export default function MonitorPage() {
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import { MonitorsTable } from "./components/monitors-table/monitors-table.component";
+import { MonitorsForm } from './components/monitors-form/monitors-form.component';
+
+export const MonitorPage = () => {
+  const [monitors, setMonitors] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/monitor").then((res) => {
+      setMonitors(res.data);
+    });
+  }, []);
+
   return (
     <div className="main-content">
-      <div className="table-container">
-        <table>
-          <thead className="table-headers">
-            <tr>
-              <th className="column-name">Full Name</th>
-              <th className="column-name">Career</th>
-              <th className="column-name">Semester</th>
-              <th className="column-name">Phone Number</th>
-              <th className="column-name">Email</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
-      </div>
+      <MonitorsTable monitors={monitors} />
+      <MonitorsForm />
     </div>
   );
 }
