@@ -8,7 +8,7 @@ export const MonitorsForm = (props) => {
     career: "",
     phonenumber: "",
     email: "",
-    semester: 1,
+    semester: "",
     identification: "",
   });
 
@@ -70,6 +70,7 @@ export const MonitorsForm = (props) => {
           <input
             type="number"
             name="semester"
+            placeholder="Semester"
             value={newMonitor.semester}
             onChange={handleInputChange}
           />
@@ -93,7 +94,7 @@ export const MonitorsForm = (props) => {
           />
         </div>
         <div className="form-group">
-          <input type="submit" value="Create" />
+          <input type="submit" value="Save" />
         </div>
       </form>
     </div>

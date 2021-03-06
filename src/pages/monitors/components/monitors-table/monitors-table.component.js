@@ -1,6 +1,11 @@
 export const MonitorsTable = (props) => {
   return (
     <div className="table-container">
+      <div className="monitors-table-header">
+        <div className="button-borderless">
+          <button onClick={props.openModal} >Create</button>
+        </div>
+      </div>
       <table>
         <thead className="table-headers">
           <tr>
