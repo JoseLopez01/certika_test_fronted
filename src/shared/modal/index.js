@@ -1,18 +1,20 @@
 import { Fragment } from "react";
 
 export const Modal = ({ children, closeModal }) => {
+  let mediaQ = matchMedia('(max-width: 1024px)');
   return (
-    <Fragment>
-      <div className="modal-wrapper">
-        <div className="modal-content">
-          <div className="close-button">
-            <button onClick={closeModal}>
-              <i className="far fa-times-circle"></i>
-            </button>
+    mediaQ.matches && 
+      <Fragment>
+        <div className="modal-wrapper">
+          <div className="modal-content">
+            <div className="close-button">
+              <button onClick={closeModal}>
+                <i className="far fa-times-circle"></i>
+              </button>
+            </div>
+            {children}
           </div>
-          {children}
         </div>
-      </div>
-    </Fragment>
+      </Fragment>
   );
 };

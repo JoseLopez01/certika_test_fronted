@@ -52,10 +52,10 @@ export const MonitorPage = () => {
         openModal={() => setOpenModal(true)}
         monitorId={(id) => setMonitorId(id)}
       />
-      <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish()} />
+      <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish} />
       {openModal && (
-        <Modal closeModal={() => onModalClose()}>
-          <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish()} />
+        <Modal closeModal={onModalClose}>
+          <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish} />
         </Modal>
       )}
     </div>

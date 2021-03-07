@@ -62,13 +62,13 @@ export const MonitorsForm = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-
+  
   return (
     <div className="form-container">
       <div className="form-title">
         {editing ? "Update" : "Create"} A Monitor
       </div>
-      <form onSubmit={(e) => handleSubmit(e)} autoComplete="false">
+      <form onSubmit={handleSubmit} autoComplete="false">
         <div className="form-group">
           <input
             type="text"
@@ -136,6 +136,7 @@ export const MonitorsForm = (props) => {
           <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>
+      {editing && <button className="delete-btn">Delete</button>}
     </div>
   );
 };

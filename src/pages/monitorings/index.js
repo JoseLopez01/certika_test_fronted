@@ -61,14 +61,14 @@ export const MonitoringsPage = () => {
       <MonitoringsForm
         editingMonitoring={editingMonitoring}
         monitors={monitors}
-        onFinish={() => onFinish()}
+        onFinish={onFinish}
       />
       {openModal && (
-        <Modal closeModal={() => onModalClose()}>
+        <Modal closeModal={onModalClose}>
           <MonitoringsForm
             monitors={monitors}
             editingMonitoring={editingMonitoring}
-            onFinish={() => onFinish()}
+            onFinish={onFinish}
           />
         </Modal>
       )}
