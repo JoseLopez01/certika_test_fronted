@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-export default function HeaderComponent() {
+function Header(props={}) {
   return (
     <div className="header-container">
       <div className="header-links">
@@ -17,4 +17,6 @@ export default function HeaderComponent() {
       </div>
     </div>
   );
-}
+};
+
+export default Header;

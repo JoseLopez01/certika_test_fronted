@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import MonitoringsTable from "./components/monitorings-table/monitorings-table.component";
-import MonitoringsForm from "./components/monitorings-form/monitorings-form.component";
+import MonitoringsTable from "./components/monitorings-table.component";
+import MonitoringsForm from "./components/monitorings-form.component";
 import Modal from "./../../shared/modal";
 
 function MonitoringsPage () {

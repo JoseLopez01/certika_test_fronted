@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import MonitorsTable from "./components/monitors-table/monitors-table.component";
-import MonitorsForm from "./components/monitors-form/monitors-form.component";
+import MonitorsTable from "./components/monitors-table.component";
+import MonitorsForm from "./components/monitors-form.component";
 import Modal from "./../../shared/modal";
 
 function MonitorPage(props={}) {
+
   const [monitors, setMonitors] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [monitorId, setMonitorId] = useState(null);
@@ -20,7 +21,7 @@ function MonitorPage(props={}) {
     });
   };
 
-  const onFinish = () => {
+  const finishHandler = () => {
     onModalClose();
     getMonitors();
   };
@@ -40,7 +41,7 @@ function MonitorPage(props={}) {
     if (monitorId || editingMonitor) {
       setEditingMonitor(null);
       setMonitorId(null);
-    }
+    };
     setOpenModal(false);
   };
 
@@ -51,10 +52,10 @@ function MonitorPage(props={}) {
         openModal={() => setOpenModal(true)}
         monitorId={(id) => setMonitorId(id)}
       />
-      <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish} />
+      <MonitorsForm editingMonitor={editingMonitor} onFinish={finishHandler} />
       {openModal && (
         <Modal closeModal={onModalClose}>
-          <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish} />
+          <MonitorsForm editingMonitor={editingMonitor} onFinish={finishHandler} />
         </Modal>
       )}
     </div>
