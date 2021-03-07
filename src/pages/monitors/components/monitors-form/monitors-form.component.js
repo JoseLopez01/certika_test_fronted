@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import FormInput from "../../../../shared/form-input";
 
-export const MonitorsForm = (props) => {
+function MonitorsForm(props) {
   const [editing, setEditing] = useState(false);
   const [errors, setErrors] = useState([]);
   const [newMonitor, setNewMonitor] = useState({
@@ -21,7 +22,7 @@ export const MonitorsForm = (props) => {
     }
   }, [props.editingMonitor]);
 
-  const assignEditingMonitor = (editingMonitor) => {
+  const assignEditingMonitor = editingMonitor => {
     setNewMonitor({
       firstname: editingMonitor.firstname,
       lastname: editingMonitor.lastname,
@@ -95,76 +96,62 @@ export const MonitorsForm = (props) => {
         {editing ? "Update" : "Create"} A Monitor
       </div>
       <form onSubmit={handleSubmit} autoComplete="false">
-        <div className="form-group">
-          <input
-            type="text"
-            name="firstname"
-            placeholder="First Name"
-            value={newMonitor.firstname}
-            onChange={handleInputChange}
-            {...errors.includes("firstname") && { className: "input-error" }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="lastname"
-            placeholder="Last Name"
-            value={newMonitor.lastname}
-            onChange={handleInputChange}
-            {...errors.includes("lastname") && { className: "input-error" }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="identification"
-            placeholder="Identification"
-            value={newMonitor.identification}
-            onChange={handleInputChange}
-            {...errors.includes("identification") && { className: "input-error" }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="career"
-            placeholder="Career"
-            value={newMonitor.career}
-            onChange={handleInputChange}
-            {...errors.includes("career") && { className: "input-error" }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="number"
-            name="semester"
-            placeholder="Semester"
-            value={newMonitor.semester}
-            onChange={handleInputChange}
-            {...errors.includes("semester") && { className: "input-error" }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="phonenumber"
-            placeholder="Phone Number"
-            value={newMonitor.phonenumber}
-            onChange={handleInputChange}
-            {...errors.includes("phonenumber") && { className: "input-error" }}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="email"
-            placeholder="Email"
-            value={newMonitor.email}
-            onChange={handleInputChange}
-            {...errors.includes("email") && { className: "input-error" }}
-          />
-        </div>
+        <FormInput
+          type="text"
+          name="firstname"
+          placeholder="First Name"
+          onChange={handleInputChange}
+          value={newMonitor.firstname}
+          form_errors={errors}
+        />
+        <FormInput
+          type="text"
+          name="lastname"
+          placeholder="Last Name"
+          value={newMonitor.lastname}
+          onChange={handleInputChange}
+          form_errors={errors}
+        />
+        <FormInput
+          type="text"
+          name="identification"
+          placeholder="Identification"
+          onChange={handleInputChange}
+          value={newMonitor.identification}
+          form_errors={errors}
+        />
+        <FormInput
+          type="text"
+          name="career"
+          placeholder="Career"
+          value={newMonitor.career}
+          onChange={handleInputChange}
+          form_errors={errors}
+        />
+        <FormInput
+          type="number"
+          name="semester"
+          placeholder="Semester"
+          value={newMonitor.semester}
+          onChange={handleInputChange}
+          form_errors={errors}
+        />
+        <FormInput
+          type="text"
+          name="phonenumber"
+          placeholder="Phone Number"
+          onChange={handleInputChange}
+          value={newMonitor.phonenumber}
+          form_errors={errors}
+        />
+        <FormInput
+          type="text"
+          name="email"
+          placeholder="Email"
+          value={newMonitor.email}
+          onChange={handleInputChange}
+          form_errors={errors}
+        />
         <div className="form-group">
           {editing && (
             <button className="delete-btn" onClick={handleDelete} type="button">
@@ -177,3 +164,5 @@ export const MonitorsForm = (props) => {
     </div>
   );
 };
+
+export default MonitorsForm;

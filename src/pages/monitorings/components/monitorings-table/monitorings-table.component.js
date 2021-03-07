@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 
-export const MonitoringsTable = (props) => {
-  
+function MonitoringsTable (props) {
   return (
     <Fragment>
       <div className="table-container">
@@ -40,3 +39,5 @@ export const MonitoringsTable = (props) => {
     </Fragment>
   );
 };
+
+export default MonitoringsTable;

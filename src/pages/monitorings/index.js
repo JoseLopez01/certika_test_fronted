@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MonitoringsTable from "./components/monitorings-table/monitorings-table.component";
+import MonitoringsForm from "./components/monitorings-form/monitorings-form.component";
+import Modal from "./../../shared/modal";
 
-import { MonitoringsTable } from "./components/monitorings-table/monitorings-table.component";
-import { MonitoringsForm } from "./components/monitorings-form/monitorings-form.component";
-import { Modal } from "./../../shared/modal";
-
-export const MonitoringsPage = () => {
+function MonitoringsPage () {
   const [monitorings, setMonitorings] = useState([]);
   const [monitors, setMonitors] = useState([]);
 
@@ -75,3 +74,5 @@ export const MonitoringsPage = () => {
     </div>
   );
 };
+
+export default MonitoringsPage;

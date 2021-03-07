@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export const MonitoringsForm = (props) => {
+function MonitoringsForm (props) {
   const [editing, setEditing] = useState(false);
   const [errors, setErrors] = useState([]);
   const [newMonitoring, setNewMonitoring] = useState({
@@ -144,3 +144,5 @@ export const MonitoringsForm = (props) => {
     </div>
   );
 };
+
+export default MonitoringsForm;

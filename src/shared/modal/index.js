@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-export const Modal = ({ children, closeModal }) => {
+function Modal ({ children, closeModal }) {
   let mediaQ = matchMedia('(max-width: 1024px)');
   return (
     mediaQ.matches && 
@@ -18,3 +18,5 @@ export const Modal = ({ children, closeModal }) => {
       </Fragment>
   );
 };
+
+export default Modal;

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MonitorsTable from "./components/monitors-table/monitors-table.component";
+import MonitorsForm from "./components/monitors-form/monitors-form.component";
+import Modal from "./../../shared/modal";
 
-import { MonitorsTable } from "./components/monitors-table/monitors-table.component";
-import { MonitorsForm } from "./components/monitors-form/monitors-form.component";
-import { Modal } from "./../../shared/modal";
-
-export const MonitorPage = () => {
+function MonitorPage(props={}) {
   const [monitors, setMonitors] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [monitorId, setMonitorId] = useState(null);
@@ -61,3 +60,5 @@ export const MonitorPage = () => {
     </div>
   );
 };
+
+export default MonitorPage;
