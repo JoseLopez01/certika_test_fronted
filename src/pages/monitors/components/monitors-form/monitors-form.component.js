@@ -62,7 +62,13 @@ export const MonitorsForm = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  
+
+  const handleDelete = () => {
+    let { id } = newMonitor;
+    axios.delete(`http://localhost:3001/api/monitor/${id}`)
+      .then(props.onFinish);
+  };
+
   return (
     <div className="form-container">
       <div className="form-title">
@@ -133,10 +139,13 @@ export const MonitorsForm = (props) => {
           />
         </div>
         <div className="form-group">
+          {editing &&
+            <button className="delete-btn" onClick={handleDelete} type="button">
+              Delete
+            </button>}
           <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>
-      {editing && <button className="delete-btn">Delete</button>}
     </div>
   );
 };

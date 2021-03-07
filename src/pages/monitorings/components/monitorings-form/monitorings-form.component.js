@@ -58,6 +58,12 @@ export const MonitoringsForm = (props) => {
     setEditing(false);
   };
 
+  const handleDelete = () => {
+    let { id } = newMonitoring;
+    axios.delete(`http://localhost:3001/api/monitoring/${id}`)
+      .then(props.onFinish);
+  };
+
   return (
     <div className="form-container">
       <div className="form-title">
@@ -106,6 +112,10 @@ export const MonitoringsForm = (props) => {
           />
         </div>
         <div className="form-group">
+          {editing &&
+            <button className="delete-btn" onClick={handleDelete} type="button">
+              Delete
+            </button>}
           <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>
