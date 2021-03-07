@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FormInput from "../../../shared/form-input";
-import { noBlank } from "../../utils/";
+import { noBlank } from "../../utils";
 
 const INITIAL_STATE = {
   firstname: "", lastname: "",
@@ -29,7 +29,7 @@ function MonitorsForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let fieldsErrors = noBlank();
+    let fieldsErrors = noBlank(newMonitor);
     if (fieldsErrors.length === 0) {
       if (editing) {
         axios
@@ -58,7 +58,7 @@ function MonitorsForm(props) {
   const handleDelete = () => {
     let { id } = newMonitor;
     axios.delete(`http://localhost:3001/api/monitor/${id}`)
-      .then(props.onFinish);
+      .then(() => { setNewMonitor(INITIAL_STATE); props.onFinish() });
   };
 
   return (

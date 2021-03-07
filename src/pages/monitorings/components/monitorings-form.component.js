@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { noBlank } from "../../utils";
+
+const INITIAL_STATE = {
+  class: "",
+  monitorid: 0,
+  classroom: "",
+  monitoringdate: "",
+};
 
 function MonitoringsForm (props) {
+
   const [editing, setEditing] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [newMonitoring, setNewMonitoring] = useState({
-    class: "",
-    monitorid: 0,
-    classroom: "",
-    monitoringdate: "",
-  });
+  const [newMonitoring, setNewMonitoring] = useState(INITIAL_STATE);
 
   useEffect(() => {
     if (props.editingMonitoring) {
@@ -19,13 +23,7 @@ function MonitoringsForm (props) {
   }, [props.editingMonitoring]);
 
   const assignEditingMonitoring = (editingMonitoring) => {
-    setNewMonitoring({
-      class: editingMonitoring.class,
-      monitorid: editingMonitoring.monitorid,
-      classroom: editingMonitoring.classroom,
-      monitoringdate: editingMonitoring.monitoringdate,
-      id: editingMonitoring.id,
-    });
+    setNewMonitoring({...editingMonitoring});
   };
 
   const handleInputChange = (e) => {
@@ -35,21 +33,9 @@ function MonitoringsForm (props) {
     });
   };
 
-  const noBlank = () => {
-    let dataArray = Object.entries(newMonitoring),
-      errors = [];
-    for (let field of dataArray) {
-      let [name, value] = field;
-      if (!value) {
-        errors.push(name);
-      }
-    }
-    return errors;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    let fieldsErrors = noBlank();
+    let fieldsErrors = noBlank(newMonitoring);
     if (fieldsErrors.length === 0) {
       if (editing) {
         axios
@@ -63,17 +49,12 @@ function MonitoringsForm (props) {
           .post("http://localhost:3001/api/monitoring/", newMonitoring)
           .then(props.onFinish);
       }
-      setNewMonitoring({
-        class: "",
-        monitorid: 0,
-        classroom: "",
-        monitoringdate: "",
-      });
+      setNewMonitoring(INITIAL_STATE);
       setEditing(false);
       setErrors([]);
     } else {
       setErrors(fieldsErrors);
-    }
+    };
   };
 
   const handleDelete = () => {
