@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const MonitorsForm = (props) => {
   const [editing, setEditing] = useState(false);
+  const [errors, setErrors] = useState([]);
   const [newMonitor, setNewMonitor] = useState({
     firstname: "",
     lastname: "",
@@ -33,27 +34,45 @@ export const MonitorsForm = (props) => {
     });
   };
 
+  const noBlank = () => {
+    let dataArray = Object.entries(newMonitor),
+      errors = [];
+    for (let field of dataArray) {
+      let [name, value] = field;
+      if (!value) {
+        errors.push(name);
+      }
+    }
+    return errors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editing) {
-      axios
-        .put(`http://localhost:3001/api/monitor/${newMonitor.id}`, newMonitor)
-        .then(props.onFinish);
+    let fieldsErrors = noBlank();
+    if (fieldsErrors.length === 0) {
+      if (editing) {
+        axios
+          .put(`http://localhost:3001/api/monitor/${newMonitor.id}`, newMonitor)
+          .then(props.onFinish);
+      } else {
+        axios
+          .post("http://localhost:3001/api/monitor", newMonitor)
+          .then(props.onFinish);
+      }
+      setNewMonitor({
+        firstname: "",
+        lastname: "",
+        career: "",
+        phonenumber: "",
+        email: "",
+        semester: "",
+        identification: "",
+      });
+      setEditing(false);
+      setErrors([]);
     } else {
-      axios
-        .post("http://localhost:3001/api/monitor", newMonitor)
-        .then(props.onFinish);
+      setErrors(fieldsErrors);
     }
-    setNewMonitor({
-      firstname: "",
-      lastname: "",
-      career: "",
-      phonenumber: "",
-      email: "",
-      semester: "",
-      identification: "",
-    });
-    setEditing(false);
   };
 
   const handleInputChange = (e) => {
@@ -65,7 +84,8 @@ export const MonitorsForm = (props) => {
 
   const handleDelete = () => {
     let { id } = newMonitor;
-    axios.delete(`http://localhost:3001/api/monitor/${id}`)
+    axios
+      .delete(`http://localhost:3001/api/monitor/${id}`)
       .then(props.onFinish);
   };
 
@@ -82,6 +102,7 @@ export const MonitorsForm = (props) => {
             placeholder="First Name"
             value={newMonitor.firstname}
             onChange={handleInputChange}
+            {...errors.includes("firstname") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -91,15 +112,17 @@ export const MonitorsForm = (props) => {
             placeholder="Last Name"
             value={newMonitor.lastname}
             onChange={handleInputChange}
+            {...errors.includes("lastname") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
           <input
             type="text"
             name="identification"
-            placeholder="Identifiation"
+            placeholder="Identification"
             value={newMonitor.identification}
             onChange={handleInputChange}
+            {...errors.includes("identification") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -109,6 +132,7 @@ export const MonitorsForm = (props) => {
             placeholder="Career"
             value={newMonitor.career}
             onChange={handleInputChange}
+            {...errors.includes("career") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -118,6 +142,7 @@ export const MonitorsForm = (props) => {
             placeholder="Semester"
             value={newMonitor.semester}
             onChange={handleInputChange}
+            {...errors.includes("semester") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -127,6 +152,7 @@ export const MonitorsForm = (props) => {
             placeholder="Phone Number"
             value={newMonitor.phonenumber}
             onChange={handleInputChange}
+            {...errors.includes("phonenumber") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -136,13 +162,15 @@ export const MonitorsForm = (props) => {
             placeholder="Email"
             value={newMonitor.email}
             onChange={handleInputChange}
+            {...errors.includes("email") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
-          {editing &&
+          {editing && (
             <button className="delete-btn" onClick={handleDelete} type="button">
               Delete
-            </button>}
+            </button>
+          )}
           <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>

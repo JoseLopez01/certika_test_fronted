@@ -302,3 +302,8 @@ button.delete-btn {
     display: none;
   }
 }
+
+.input-error {
+  background-color: #ff000054 !important;
+  border-radius: 3px 3px 0 0;
+}
