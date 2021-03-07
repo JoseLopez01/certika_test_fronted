@@ -4,27 +4,29 @@ import FormInput from "../../../shared/form-input";
 import { noBlank } from "../../utils";
 
 const INITIAL_STATE = {
-  firstname: "", lastname: "",
-  career: "", phonenumber: "",
-  email: "", semester: "",
+  firstname: "",
+  lastname: "",
+  career: "",
+  phonenumber: "",
+  email: "",
+  semester: "",
   identification: "",
 };
 
 function MonitorsForm(props) {
-
+  const [newMonitor, setNewMonitor] = useState(INITIAL_STATE);
   const [editing, setEditing] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [newMonitor, setNewMonitor] = useState(INITIAL_STATE);
 
   useEffect(() => {
     if (props.editingMonitor) {
       setEditing(true);
       assignEditingMonitor(props.editingMonitor);
-    };
+    }
   }, [props.editingMonitor]);
 
-  const assignEditingMonitor = editingMonitor => {
-    setNewMonitor({...editingMonitor});
+  const assignEditingMonitor = (editingMonitor) => {
+    setNewMonitor({ ...editingMonitor });
   };
 
   const handleSubmit = (e) => {
@@ -39,13 +41,13 @@ function MonitorsForm(props) {
         axios
           .post("http://localhost:3001/api/monitor", newMonitor)
           .then(props.onFinish);
-      };
+      }
       setNewMonitor(INITIAL_STATE);
       setEditing(false);
       setErrors([]);
     } else {
       setErrors(fieldsErrors);
-    };
+    }
   };
 
   const handleInputChange = (e) => {
@@ -57,8 +59,10 @@ function MonitorsForm(props) {
 
   const handleDelete = () => {
     let { id } = newMonitor;
-    axios.delete(`http://localhost:3001/api/monitor/${id}`)
-      .then(() => { setNewMonitor(INITIAL_STATE); props.onFinish() });
+    axios.delete(`http://localhost:3001/api/monitor/${id}`).then(() => {
+      setNewMonitor(INITIAL_STATE);
+      props.onFinish();
+    });
   };
 
   return (
@@ -134,6 +138,6 @@ function MonitorsForm(props) {
       </form>
     </div>
   );
-};
+}
 
 export default MonitorsForm;
