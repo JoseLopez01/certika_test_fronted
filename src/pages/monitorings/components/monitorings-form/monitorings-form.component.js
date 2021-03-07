@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const MonitoringsForm = (props) => {
   const [editing, setEditing] = useState(false);
-
+  const [errors, setErrors] = useState([]);
   const [newMonitoring, setNewMonitoring] = useState({
     class: "",
     monitorid: 0,
@@ -35,27 +35,45 @@ export const MonitoringsForm = (props) => {
     });
   };
 
+  const noBlank = () => {
+    let dataArray = Object.entries(newMonitoring),
+      errors = [];
+    for (let field of dataArray) {
+      let [name, value] = field;
+      if (!value) {
+        errors.push(name);
+      }
+    }
+    return errors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editing) {
-      axios
-        .put(
-          `http://localhost:3001/api/monitoring/${newMonitoring.id}`,
-          newMonitoring
-        )
-        .then(props.onFinish);
+    let fieldsErrors = noBlank();
+    if (fieldsErrors.length === 0) {
+      if (editing) {
+        axios
+          .put(
+            `http://localhost:3001/api/monitoring/${newMonitoring.id}`,
+            newMonitoring
+          )
+          .then(props.onFinish);
+      } else {
+        axios
+          .post("http://localhost:3001/api/monitoring/", newMonitoring)
+          .then(props.onFinish);
+      }
+      setNewMonitoring({
+        class: "",
+        monitorid: 0,
+        classroom: "",
+        monitoringdate: "",
+      });
+      setEditing(false);
+      setErrors([]);
     } else {
-      axios
-        .post("http://localhost:3001/api/monitoring/", newMonitoring)
-        .then(props.onFinish);
+      setErrors(fieldsErrors);
     }
-    setNewMonitoring({
-      class: "",
-      monitorid: 0,
-      classroom: "",
-      monitoringdate: "",
-    });
-    setEditing(false);
   };
 
   const handleDelete = () => {
@@ -77,6 +95,7 @@ export const MonitoringsForm = (props) => {
             placeholder="Class"
             value={newMonitoring.class}
             onChange={handleInputChange}
+            {...errors.includes("class") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -84,6 +103,7 @@ export const MonitoringsForm = (props) => {
             name="monitorid"
             value={newMonitoring.monitorid}
             onChange={handleInputChange}
+            {...errors.includes("monitorid") && { className: "input-error" }}
           >
             <option value="0">Select A Monitor</option>
             {props.monitors.map((monitor) => (
@@ -100,6 +120,7 @@ export const MonitoringsForm = (props) => {
             placeholder="ClassRoom"
             value={newMonitoring.classroom}
             onChange={handleInputChange}
+            {...errors.includes("classroom") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
@@ -109,6 +130,7 @@ export const MonitoringsForm = (props) => {
             placeholder="Date YYYY-MM-DD"
             value={newMonitoring.monitoringdate}
             onChange={handleInputChange}
+            {...errors.includes("monitoringdate") && { className: "input-error" }}
           />
         </div>
         <div className="form-group">
