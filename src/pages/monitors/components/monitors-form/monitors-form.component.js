@@ -38,13 +38,11 @@ export const MonitorsForm = (props) => {
     if (editing) {
       axios
         .put(`http://localhost:3001/api/monitor/${newMonitor.id}`, newMonitor)
-        .then((res) => console.log(res));
+        .then(props.onFinish);
     } else {
       axios
         .post("http://localhost:3001/api/monitor", newMonitor)
-        .then((res) => {
-          console.log(res);
-        });
+        .then(props.onFinish);
     }
     setNewMonitor({
       firstname: "",

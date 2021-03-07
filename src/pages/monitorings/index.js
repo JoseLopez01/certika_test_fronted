@@ -13,10 +13,14 @@ export const MonitoringsPage = () => {
   const [monitoringId, setMonitoringId] = useState(null);
   const [editingMonitoring, setEditingMonitoring] = useState(null);
 
-  useEffect(() => {
+  const getMonitorings = () => {
     axios.get("http://localhost:3001/api/monitoring/").then((res) => {
       setMonitorings(res.data);
     });
+  };
+
+  useEffect(() => {
+    getMonitorings();
     axios.get("http://localhost:3001/api/monitor/").then((res) => {
       setMonitors(res.data);
     });
@@ -42,6 +46,11 @@ export const MonitoringsPage = () => {
     setOpenModal(false);
   };
 
+  const onFinish = () => {
+    onModalClose();
+    getMonitorings();
+  };
+
   return (
     <div className="main-content">
       <MonitoringsTable
@@ -52,12 +61,14 @@ export const MonitoringsPage = () => {
       <MonitoringsForm
         editingMonitoring={editingMonitoring}
         monitors={monitors}
+        onFinish={() => onFinish()}
       />
       {openModal && (
         <Modal closeModal={() => onModalClose()}>
           <MonitoringsForm
             monitors={monitors}
             editingMonitoring={editingMonitoring}
+            onFinish={() => onFinish()}
           />
         </Modal>
       )}

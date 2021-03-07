@@ -14,7 +14,7 @@ export const MonitoringsForm = (props) => {
   useEffect(() => {
     if (props.editingMonitoring) {
       setEditing(true);
-      assignEditingMonitoring(props.editingMonitoring)
+      assignEditingMonitoring(props.editingMonitoring);
     }
   }, [props.editingMonitoring]);
 
@@ -43,12 +43,12 @@ export const MonitoringsForm = (props) => {
           `http://localhost:3001/api/monitoring/${newMonitoring.id}`,
           newMonitoring
         )
-        .then((res) => console.log());
+        .then(props.onFinish);
     } else {
       axios
         .post("http://localhost:3001/api/monitoring/", newMonitoring)
-        .then((res) => console.log(res.data));
-    };
+        .then(props.onFinish);
+    }
     setNewMonitoring({
       class: "",
       monitorid: 0,
@@ -61,7 +61,8 @@ export const MonitoringsForm = (props) => {
   return (
     <div className="form-container">
       <div className="form-title">
-      {editing ? "Update" : "Create"} A Monitoring</div>
+        {editing ? "Update" : "Create"} A Monitoring
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input

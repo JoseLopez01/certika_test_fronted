@@ -12,10 +12,19 @@ export const MonitorPage = () => {
   const [editingMonitor, setEditingMonitor] = useState(null);
 
   useEffect(() => {
+    getMonitors();
+  }, []);
+
+  const getMonitors = () => {
     axios.get("http://localhost:3001/api/monitor").then((res) => {
       setMonitors(res.data);
     });
-  }, []);
+  };
+
+  const onFinish = () => {
+    onModalClose();
+    getMonitors();
+  };
 
   useEffect(() => {
     if (monitorId) {
@@ -43,12 +52,10 @@ export const MonitorPage = () => {
         openModal={() => setOpenModal(true)}
         monitorId={(id) => setMonitorId(id)}
       />
-      <MonitorsForm
-        editingMonitor={editingMonitor}
-      />
+      <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish()} />
       {openModal && (
         <Modal closeModal={() => onModalClose()}>
-          <MonitorsForm editingMonitor={editingMonitor} />
+          <MonitorsForm editingMonitor={editingMonitor} onFinish={onFinish()} />
         </Modal>
       )}
     </div>
