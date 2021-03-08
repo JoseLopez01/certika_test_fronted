@@ -1,10 +1,20 @@
+/* React imports */
 import { useEffect, useState } from "react";
+
+/* Third parts imports */
 import axios from "axios";
+
+/* Constants imports */
+import { API_ENDPOINT } from "../../core/constants";
+
+/* Components imports */
 import MonitoringsTable from "./components/monitorings-table.component";
 import MonitoringsForm from "./components/monitorings-form.component";
+
+/* Shared imports */
 import Modal from "./../../shared/modal";
 
-function MonitoringsPage () {
+function MonitoringsPage() {
   const [monitorings, setMonitorings] = useState([]);
   const [monitors, setMonitors] = useState([]);
 
@@ -13,14 +23,14 @@ function MonitoringsPage () {
   const [editingMonitoring, setEditingMonitoring] = useState(null);
 
   const getMonitorings = () => {
-    axios.get("http://localhost:3001/api/monitoring/").then((res) => {
+    axios.get(`${API_ENDPOINT}/monitoring`).then((res) => {
       setMonitorings(res.data);
     });
   };
 
   useEffect(() => {
     getMonitorings();
-    axios.get("http://localhost:3001/api/monitor/").then((res) => {
+    axios.get(`${API_ENDPOINT}/monitor`).then((res) => {
       setMonitors(res.data);
     });
   }, []);
@@ -28,7 +38,7 @@ function MonitoringsPage () {
   useEffect(() => {
     if (monitoringId) {
       axios
-        .get(`http://localhost:3001/api/monitoring/${monitoringId}`)
+        .get(`${API_ENDPOINT}/monitoring/${monitoringId}`)
         .then(({ data }) => {
           const [monitoring] = data.data;
           setEditingMonitoring(monitoring);
@@ -73,6 +83,6 @@ function MonitoringsPage () {
       )}
     </div>
   );
-};
+}
 
 export default MonitoringsPage;

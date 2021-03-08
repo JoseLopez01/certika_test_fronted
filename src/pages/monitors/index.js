@@ -1,7 +1,17 @@
+/* React imports */
 import { useEffect, useState } from "react";
+
+/* Third part imports */
 import axios from "axios";
+
+/* Constants imports */
+import { API_ENDPOINT } from "../../core/constants";
+
+/* Components imports */
 import MonitorsTable from "./components/monitors-table.component";
 import MonitorsForm from "./components/monitors-form.component";
+
+/* Shared imports */
 import Modal from "./../../shared/modal";
 
 function MonitorPage(props={}) {
@@ -16,7 +26,7 @@ function MonitorPage(props={}) {
   }, []);
 
   const getMonitors = () => {
-    axios.get("http://localhost:3001/api/monitor").then((res) => {
+    axios.get(`${API_ENDPOINT}/monitor`).then((res) => {
       setMonitors(res.data);
     });
   };
@@ -29,7 +39,7 @@ function MonitorPage(props={}) {
   useEffect(() => {
     if (monitorId) {
       axios
-        .get(`http://localhost:3001/api/monitor/${monitorId}`)
+        .get(`${API_ENDPOINT}/monitor/${monitorId}`)
         .then(({ data }) => {
           setEditingMonitor(data.data[0]);
           setOpenModal(true);

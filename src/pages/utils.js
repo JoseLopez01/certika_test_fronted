@@ -24,4 +24,13 @@ function isAValidEmail(email) {
   );
 }
 
-export { noBlank, isAValidDate, isAValidHour, isAValidEmail };
+function formatDate(date) {
+  return date.split("T")[0];
+}
+
+function formatHour(hour) {
+  const splited = hour.split(":");
+  return `${splited[0]}:${splited[1]}`;
+}
+
+export { noBlank, isAValidDate, isAValidHour, isAValidEmail, formatDate, formatHour };

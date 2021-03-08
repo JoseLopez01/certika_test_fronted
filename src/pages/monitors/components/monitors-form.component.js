@@ -1,8 +1,17 @@
+/* React imports */
 import { useEffect, useState } from "react";
+
+/* Third part imports */
 import axios from "axios";
 import MaskInput from "react-maskinput";
 
+/* Constants imports */
+import { API_ENDPOINT } from "../../../core/constants";
+
+/* Shared imports */
 import FormInput from "../../../shared/form-input";
+
+/* Utils imports */
 import { noBlank, isAValidEmail } from "../../utils";
 
 const INITIAL_STATE = {
@@ -46,11 +55,11 @@ function MonitorsForm(props) {
     if (formIsValid()) {
       if (editing) {
         axios
-          .put(`http://localhost:3001/api/monitor/${newMonitor.id}`, newMonitor)
+          .put(`${API_ENDPOINT}/monitor/${newMonitor.id}`, newMonitor)
           .then(props.onFinish);
       } else {
         axios
-          .post("http://localhost:3001/api/monitor", newMonitor)
+          .post(`${API_ENDPOINT}/monitor`, newMonitor)
           .then(props.onFinish);
       }
       setNewMonitor(INITIAL_STATE);
@@ -67,9 +76,8 @@ function MonitorsForm(props) {
 
   const handleDelete = () => {
     const { id } = newMonitor;
-    axios.delete(`http://localhost:3001/api/monitor/${id}`).then(() => {
-      setNewMonitor(INITIAL_STATE);
-      props.onFinish();
+    axios.delete(`${API_ENDPOINT}/monitor/${id}`).then(() => {
+      handleCancel();
     });
   };
 

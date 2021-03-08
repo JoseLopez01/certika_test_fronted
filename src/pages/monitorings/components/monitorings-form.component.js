@@ -1,7 +1,15 @@
+/* React imports */
 import { useEffect, useState } from "react";
+
+/* Third part imports */
 import axios from "axios";
 import MaskInput from "react-maskinput";
-import { isAValidDate, isAValidHour, noBlank } from "../../utils";
+
+/* Constants imports */
+import { API_ENDPOINT } from "../../../core/constants";
+
+/* Utils imports */
+import { isAValidDate, isAValidHour, noBlank, formatDate, formatHour } from "../../utils";
 
 const INITIAL_STATE = {
   class: "",
@@ -25,7 +33,11 @@ function MonitoringsForm(props) {
   }, [props.editingMonitoring]);
 
   const assignEditingMonitoring = (editingMonitoring) => {
-    setNewMonitoring({ ...editingMonitoring });
+    setNewMonitoring({
+      ...editingMonitoring,
+      monitoringdate: formatDate(editingMonitoring.monitoringdate),
+      monitoringhour: formatHour(editingMonitoring.monitoringhour)
+    });
   };
 
   const handleInputChange = (e) => {
@@ -59,13 +71,13 @@ function MonitoringsForm(props) {
       if (editing) {
         axios
           .put(
-            `http://localhost:3001/api/monitoring/${newMonitoring.id}`,
+            `${API_ENDPOINT}/monitoring/${newMonitoring.id}`,
             newMonitoring
           )
           .then(props.onFinish);
       } else {
         axios
-          .post("http://localhost:3001/api/monitoring/", newMonitoring)
+          .post(`${API_ENDPOINT}/monitoring/`, newMonitoring)
           .then(props.onFinish);
       }
       setNewMonitoring(INITIAL_STATE);
@@ -76,8 +88,10 @@ function MonitoringsForm(props) {
   const handleDelete = () => {
     const { id } = newMonitoring;
     axios
-      .delete(`http://localhost:3001/api/monitoring/${id}`)
-      .then(props.onFinish);
+      .delete(`${API_ENDPOINT}/monitoring/${id}`)
+      .then(() => {
+        handleCancel();
+      });
   };
 
   const handleCancel = () => {
