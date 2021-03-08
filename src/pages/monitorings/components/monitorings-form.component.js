@@ -45,7 +45,7 @@ function MonitoringsForm(props) {
     }
     if (
       !fieldsErrors.includes("monitoringhour") &&
-      !isAValidDate(newMonitoring.monitoringhour)
+      !isAValidHour(newMonitoring.monitoringhour)
     ) {
       fieldsErrors.push("monitoringhour");
     }
