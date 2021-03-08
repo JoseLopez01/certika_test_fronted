@@ -2,18 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./index.css";
-import { MonitoringsPage } from './pages/monitorings';
-import { MonitorPage } from "./pages/monitors";
-import HeaderComponent from "./shared/header";
+import MonitoringsPage from './pages/monitorings';
+import MonitorPage from "./pages/monitors";
+import Header from "./shared/header";
 
 ReactDOM.render(
   <React.StrictMode>
     <div className="container">
       <BrowserRouter>
-        <HeaderComponent />
+        <Header />
         <Switch>
-          <Route path="/monitorings" exact component={MonitoringsPage} />
-          <Route path="/" exact component={MonitorPage} />
+          <Route path="/monitorings" component={MonitoringsPage} exact/>
+          <Route path="/" component={MonitorPage} exact/>
         </Switch>
       </BrowserRouter>
     </div>

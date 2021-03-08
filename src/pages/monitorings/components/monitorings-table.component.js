@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 
-export const MonitoringsTable = (props) => {
-  
+import { formatDate, formatHour } from "../../utils";
+
+function MonitoringsTable(props) {
   return (
     <Fragment>
       <div className="table-container">
@@ -16,7 +17,7 @@ export const MonitoringsTable = (props) => {
               <th className="column-name">Class</th>
               <th className="column-name">Monitor</th>
               <th className="column-name">Class Room</th>
-              <th className="column-name">Date</th>
+              <th className="column-name">Date - Hour</th>
             </tr>
           </thead>
           <tbody>
@@ -31,7 +32,10 @@ export const MonitoringsTable = (props) => {
                   {monitoring.monitor.firstname} {monitoring.monitor.lastname}
                 </td>
                 <td className="column-value">{monitoring.classroom}</td>
-                <td className="column-value">{monitoring.monitoringdate}</td>
+                <td className="column-value">
+                  {formatDate(monitoring.monitoringdate)}{" "}
+                  {formatHour(monitoring.monitoringhour)}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -39,4 +43,6 @@ export const MonitoringsTable = (props) => {
       </div>
     </Fragment>
   );
-};
+}
+
+export default MonitoringsTable;

@@ -1,23 +1,36 @@
+/* React imports */
 import { useEffect, useState } from "react";
+
+/* Third parts imports */
 import axios from "axios";
 
-import { MonitoringsTable } from "./components/monitorings-table/monitorings-table.component";
-import { MonitoringsForm } from "./components/monitorings-form/monitorings-form.component";
-import { Modal } from "./../../shared/modal";
+/* Constants imports */
+import { API_ENDPOINT } from "../../core/constants";
 
-export const MonitoringsPage = () => {
+/* Components imports */
+import MonitoringsTable from "./components/monitorings-table.component";
+import MonitoringsForm from "./components/monitorings-form.component";
+
+/* Shared imports */
+import Modal from "./../../shared/modal";
+
+function MonitoringsPage() {
   const [monitorings, setMonitorings] = useState([]);
   const [monitors, setMonitors] = useState([]);
 
   const [openModal, setOpenModal] = useState(false);
   const [monitoringId, setMonitoringId] = useState(null);
-  const [editingMonitor, setEditingMonitoring] = useState(null);
+  const [editingMonitoring, setEditingMonitoring] = useState(null);
 
-  useEffect(() => {
-    axios.get("http://localhost:3001/api/monitoring/").then((res) => {
+  const getMonitorings = () => {
+    axios.get(`${API_ENDPOINT}/monitoring`).then((res) => {
       setMonitorings(res.data);
     });
-    axios.get("http://localhost:3001/api/monitor/").then((res) => {
+  };
+
+  useEffect(() => {
+    getMonitorings();
+    axios.get(`${API_ENDPOINT}/monitor`).then((res) => {
       setMonitors(res.data);
     });
   }, []);
@@ -25,7 +38,7 @@ export const MonitoringsPage = () => {
   useEffect(() => {
     if (monitoringId) {
       axios
-        .get(`http://localhost:3001/api/monitoring/${monitoringId}`)
+        .get(`${API_ENDPOINT}/monitoring/${monitoringId}`)
         .then(({ data }) => {
           const [monitoring] = data.data;
           setEditingMonitoring(monitoring);
@@ -35,11 +48,16 @@ export const MonitoringsPage = () => {
   }, [monitoringId]);
 
   const onModalClose = () => {
-    if (monitoringId || editingMonitor) {
+    if (monitoringId || editingMonitoring) {
       setEditingMonitoring(null);
       setMonitoringId(null);
     }
     setOpenModal(false);
+  };
+
+  const onFinish = () => {
+    onModalClose();
+    getMonitorings();
   };
 
   return (
@@ -49,12 +67,22 @@ export const MonitoringsPage = () => {
         openModal={() => setOpenModal(true)}
         monitoringid={(id) => setMonitoringId(id)}
       />
-      <MonitoringsForm monitors={monitors} />
+      <MonitoringsForm
+        monitors={monitors}
+        editingMonitoring={editingMonitoring}
+        onFinish={onFinish}
+      />
       {openModal && (
-        <Modal closeModal={() => onModalClose()}>
-          <MonitoringsForm monitors={monitors} />
+        <Modal closeModal={onModalClose}>
+          <MonitoringsForm
+            monitors={monitors}
+            editingMonitoring={editingMonitoring}
+            onFinish={onFinish}
+          />
         </Modal>
       )}
     </div>
   );
-};
+}
+
+export default MonitoringsPage;

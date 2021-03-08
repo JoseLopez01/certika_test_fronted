@@ -1,4 +1,4 @@
-export const MonitorsTable = (props) => {
+function MonitorsTable (props) {
   return (
     <div className="table-container">
       <div className="monitors-table-header">
@@ -37,3 +37,5 @@ export const MonitorsTable = (props) => {
     </div>
   );
 };
+
+export default MonitorsTable;

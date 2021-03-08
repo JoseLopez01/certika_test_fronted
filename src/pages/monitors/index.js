@@ -1,26 +1,45 @@
+/* React imports */
 import { useEffect, useState } from "react";
+
+/* Third part imports */
 import axios from "axios";
 
-import { MonitorsTable } from "./components/monitors-table/monitors-table.component";
-import { MonitorsForm } from "./components/monitors-form/monitors-form.component";
-import { Modal } from "./../../shared/modal";
+/* Constants imports */
+import { API_ENDPOINT } from "../../core/constants";
 
-export const MonitorPage = () => {
+/* Components imports */
+import MonitorsTable from "./components/monitors-table.component";
+import MonitorsForm from "./components/monitors-form.component";
+
+/* Shared imports */
+import Modal from "./../../shared/modal";
+
+function MonitorPage(props={}) {
+
   const [monitors, setMonitors] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [monitorId, setMonitorId] = useState(null);
   const [editingMonitor, setEditingMonitor] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/monitor").then((res) => {
+    getMonitors();
+  }, []);
+
+  const getMonitors = () => {
+    axios.get(`${API_ENDPOINT}/monitor`).then((res) => {
       setMonitors(res.data);
     });
-  }, []);
+  };
+
+  const finishHandler = () => {
+    onModalClose();
+    getMonitors();
+  };
 
   useEffect(() => {
     if (monitorId) {
       axios
-        .get(`http://localhost:3001/api/monitor/${monitorId}`)
+        .get(`${API_ENDPOINT}/monitor/${monitorId}`)
         .then(({ data }) => {
           setEditingMonitor(data.data[0]);
           setOpenModal(true);
@@ -32,7 +51,7 @@ export const MonitorPage = () => {
     if (monitorId || editingMonitor) {
       setEditingMonitor(null);
       setMonitorId(null);
-    }
+    };
     setOpenModal(false);
   };
 
@@ -43,12 +62,14 @@ export const MonitorPage = () => {
         openModal={() => setOpenModal(true)}
         monitorId={(id) => setMonitorId(id)}
       />
-      <MonitorsForm editingMonitor={editingMonitor} />
+      <MonitorsForm editingMonitor={editingMonitor} onFinish={finishHandler} />
       {openModal && (
-        <Modal closeModal={() => onModalClose()}>
-          <MonitorsForm editingMonitor={editingMonitor} />
+        <Modal closeModal={onModalClose}>
+          <MonitorsForm editingMonitor={editingMonitor} onFinish={finishHandler} />
         </Modal>
       )}
     </div>
   );
 };
+
+export default MonitorPage;
