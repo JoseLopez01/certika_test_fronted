@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MaskInput from "react-maskinput";
+
 import FormInput from "../../../shared/form-input";
-import { noBlank } from "../../utils";
+import { noBlank, isAValidEmail } from "../../utils";
 
 const INITIAL_STATE = {
   firstname: "",
@@ -21,6 +23,7 @@ function MonitorsForm(props) {
   useEffect(() => {
     if (props.editingMonitor) {
       setEditing(true);
+      setErrors([]);
       assignEditingMonitor(props.editingMonitor);
     }
   }, [props.editingMonitor]);
@@ -29,10 +32,18 @@ function MonitorsForm(props) {
     setNewMonitor({ ...editingMonitor });
   };
 
+  const formIsValid = () => {
+    const fieldsErrors = noBlank(newMonitor);
+    if (!fieldsErrors.includes("email") && !isAValidEmail(newMonitor.email)) {
+      fieldsErrors.push("email");
+    }
+    setErrors(fieldsErrors.length ? fieldsErrors : []);
+    return fieldsErrors.length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    let fieldsErrors = noBlank(newMonitor);
-    if (fieldsErrors.length === 0) {
+    if (formIsValid()) {
       if (editing) {
         axios
           .put(`http://localhost:3001/api/monitor/${newMonitor.id}`, newMonitor)
@@ -44,9 +55,6 @@ function MonitorsForm(props) {
       }
       setNewMonitor(INITIAL_STATE);
       setEditing(false);
-      setErrors([]);
-    } else {
-      setErrors(fieldsErrors);
     }
   };
 
@@ -58,11 +66,17 @@ function MonitorsForm(props) {
   };
 
   const handleDelete = () => {
-    let { id } = newMonitor;
+    const { id } = newMonitor;
     axios.delete(`http://localhost:3001/api/monitor/${id}`).then(() => {
       setNewMonitor(INITIAL_STATE);
       props.onFinish();
     });
+  };
+
+  const handleCancel = () => {
+    setNewMonitor(INITIAL_STATE);
+    setEditing(false);
+    setErrors([]);
   };
 
   return (
@@ -95,6 +109,19 @@ function MonitorsForm(props) {
           value={newMonitor.identification}
           form_errors={errors}
         />
+        <div className="form-group masked">
+          <MaskInput
+            alwaysShowMask
+            maskChar="_"
+            name="phonenumber"
+            mask="(000) 000 0000"
+            value={newMonitor.phonenumber}
+            onChange={handleInputChange}
+            {...(errors.includes("phonenumber") && {
+              className: "input-error",
+            })}
+          />
+        </div>
         <FormInput
           type="text"
           name="career"
@@ -113,26 +140,21 @@ function MonitorsForm(props) {
         />
         <FormInput
           type="text"
-          name="phonenumber"
-          placeholder="Phone Number"
-          onChange={handleInputChange}
-          value={newMonitor.phonenumber}
-          form_errors={errors}
-        />
-        <FormInput
-          type="text"
           name="email"
           placeholder="Email"
           value={newMonitor.email}
           onChange={handleInputChange}
           form_errors={errors}
         />
-        <div className="form-group">
+        <div className="form-group-footer form-group">
           {editing && (
             <button className="delete-btn" onClick={handleDelete} type="button">
               Delete
             </button>
           )}
+          <button className="cancel-btn" onClick={handleCancel} type="button">
+            Cancel
+          </button>
           <input type="submit" value={editing ? "Update" : "Save"} />
         </div>
       </form>

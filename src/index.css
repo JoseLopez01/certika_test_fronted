@@ -10,6 +10,10 @@ body,
   height: 100%;
 }
 
+input:-internal-autofill-selected {
+  color: #787878;
+}
+
 .header-container {
   width: 100%;
   display: flex;
@@ -208,9 +212,6 @@ input[type="text"] {
 }
 
 button.delete-btn {
-  /* position: absolute;
-  bottom: 0;
-  left: 0; */
   margin: 15px;
   background-color: red;
   color: white;
@@ -219,6 +220,10 @@ button.delete-btn {
   border: none;
   outline: none;
   border-radius: 20px;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {
@@ -306,4 +311,34 @@ button.delete-btn {
 .input-error {
   background-color: #ff000054 !important;
   border-radius: 3px 3px 0 0;
+}
+
+.masked input {
+  height: 35px;
+  background: none;
+  border: none;
+  padding-left: 10px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.cancel-btn {
+  margin: 15px;
+  background: none;
+  color: red;
+  width: 120px;
+  height: 35px;
+  border: 1px solid red;
+  outline: none;
+  border-radius: 20px;
+}
+
+.form-group-footer button,
+.form-group-footer input[type="submit"] {
+  margin: 0;
+}
+
+.form-group-footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
 }
