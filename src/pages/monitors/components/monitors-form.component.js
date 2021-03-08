@@ -77,6 +77,7 @@ function MonitorsForm(props) {
     setNewMonitor(INITIAL_STATE);
     setEditing(false);
     setErrors([]);
+    props.onFinish();
   };
 
   return (

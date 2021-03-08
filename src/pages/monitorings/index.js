@@ -58,8 +58,8 @@ function MonitoringsPage () {
         monitoringid={(id) => setMonitoringId(id)}
       />
       <MonitoringsForm
-        editingMonitoring={editingMonitoring}
         monitors={monitors}
+        editingMonitoring={editingMonitoring}
         onFinish={onFinish}
       />
       {openModal && (

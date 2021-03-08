@@ -84,7 +84,8 @@ function MonitoringsForm(props) {
     setNewMonitoring(INITIAL_STATE);
     setEditing(false);
     setErrors([]);
-  }
+    props.onFinish();
+  };
 
   return (
     <div className="form-container">
@@ -153,7 +154,7 @@ function MonitoringsForm(props) {
             })}
           />
         </div>
-        <div className="form-group-footer">
+        <div className="form-group-footer form-group">
           {editing && (
             <button className="delete-btn" onClick={handleDelete} type="button">
               Delete
